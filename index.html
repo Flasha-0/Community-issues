@@ -301,6 +301,11 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
 }
 #sc:hover{border-color:var(--fl-accent-a);background:color-mix(in srgb,var(--fl-accent-a) 12%,transparent)}
 
+/* ── Flasha FAB z-index fix ── */
+#fl-fab-root{z-index:9000}
+#fl-fab-btn{z-index:9001}
+#fl-fab-menu{z-index:9002}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   :root{--sidebar-width:260px}
@@ -440,6 +445,8 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
 <!-- ════ FLASHA DESIGN SYSTEM v5.0 (CRIMSON INK) — END ════ -->
 
 <div id="progress"><div id="progress-bar"></div></div>
+
+
 
 <header>
   <div class="logo">
@@ -1586,6 +1593,7 @@ function nav(id){
   const sec=document.getElementById('s-'+id);
   if(sec){currentSection=id;sec.scrollIntoView({behavior:'smooth',block:'start'});}
   else{document.getElementById('s-home').scrollIntoView({behavior:'smooth',block:'start'});currentSection='home';}
+  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('active',s.id==='s-'+currentSection));
   document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.toggle('active',i.dataset.sec===id));
   window.location.hash=id;
 }
@@ -1828,6 +1836,7 @@ document.getElementById('sbt').onclick=function(){
   sb.classList.toggle('closed');this.classList.toggle('closed');
   main.classList.toggle('shifted');
 };
+
 
 </script>
 
