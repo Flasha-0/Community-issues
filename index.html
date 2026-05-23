@@ -76,7 +76,7 @@ header{
   background:rgba(5,5,15,.92);backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
   border-left:1px solid var(--fl-glass-border);
-  color:#fff;transition:transform .4s cubic-bezier(.4,0,.2,1)
+  color:#fff;transition:transform .3s ease
 }
 #sidebar.closed{transform:translateX(100%)}
 .sidebar-head{padding:18px 20px 14px;border-bottom:1px solid var(--fl-glass-border)}
@@ -100,13 +100,21 @@ header{
 .sidebar-item .sp{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:5px;overflow:hidden}
 .sidebar-item .sp .spb{height:100%;background:var(--fl-grad);border-radius:2px;width:0%;transition:width .5s}
 #sbt{
-  position:fixed;top:calc(var(--header-height) + 10px);right:10px;z-index:1000;
-  background:var(--fl-grad);color:#fff;border:none;width:40px;height:40px;border-radius:50%;
+  position:fixed;top:calc(var(--header-height) + 10px);right:calc(var(--sidebar-width) + 10px);z-index:1000;
+  background:var(--fl-grad);color:#fff;border:none;width:36px;height:36px;border-radius:8px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;box-shadow:0 4px 20px rgba(139,30,71,.3);transition:var(--fl-transition)
+  font-size:1.1rem;box-shadow:0 4px 16px rgba(139,30,71,.25);transition:all .25s ease
 }
-#sbt:hover{transform:scale(1.05);box-shadow:0 6px 28px rgba(139,30,71,.45)}
-#sbt.closed{right:calc(var(--sidebar-width) + 10px)}
+#sbt:hover{background:var(--fl-accent-b);box-shadow:0 4px 20px rgba(139,30,71,.4)}
+#sbt.closed{right:10px}
+#sbt .sbt-icon{display:flex;flex-direction:column;gap:3px}
+#sbt .sbt-icon span{display:block;width:16px;height:2px;background:#fff;border-radius:1px;transition:all .25s ease}
+#sbt.closed .sbt-icon span:nth-child(1){transform:rotate(0) translateY(0)}
+#sbt.closed .sbt-icon span:nth-child(2){opacity:1}
+#sbt.closed .sbt-icon span:nth-child(3){transform:rotate(0) translateY(0)}
+#sbt:not(.closed) .sbt-icon span:nth-child(1){transform:rotate(45deg) translateY(5px)}
+#sbt:not(.closed) .sbt-icon span:nth-child(2){opacity:0}
+#sbt:not(.closed) .sbt-icon span:nth-child(3){transform:rotate(-45deg) translateY(-5px)}
 
 /* ── Main ── */
 main{
@@ -301,10 +309,160 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
 }
 #sc:hover{border-color:var(--fl-accent-a);background:color-mix(in srgb,var(--fl-accent-a) 12%,transparent)}
 
-/* ── Flasha FAB z-index fix ── */
-#fl-fab-root{z-index:9000}
+/* ── Flasha FAB z-index & pointer fix ── */
+#fl-fab-root{z-index:9000;pointer-events:none}
+#fl-fab-root>*{pointer-events:auto}
 #fl-fab-btn{z-index:9001}
-#fl-fab-menu{z-index:9002}
+#fl-fab-menu{z-index:9002;pointer-events:none}
+#fl-fab-menu.fl-menu--open{pointer-events:auto}
+
+/* ── Exam Page ── */
+#s-exam{--exam-gold:#D4A843;--exam-dark:#1A0F0A;--exam-paper:#FDF8F0;--exam-sepia:#F5E6C8}
+[data-theme="dark"] #s-exam{--exam-gold:#E6C467;--exam-dark:#F2EAF0;--exam-paper:#1A1410;--exam-sepia:#2A1F18}
+#s-exam{background:var(--exam-paper);border-radius:var(--fl-radius);padding:0!important;overflow:hidden;max-width:1000px;position:relative}
+#s-exam::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,color-mix(in srgb,var(--exam-sepia) 30%,transparent) 28px,color-mix(in srgb,var(--exam-sepia) 30%,transparent) 29px);pointer-events:none}
+.exam-header{background:linear-gradient(135deg,var(--exam-dark),#2A1F18);padding:40px 30px 30px;text-align:center;position:relative;overflow:hidden}
+.exam-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--exam-gold) 20%,var(--exam-gold) 80%,transparent)}
+.exam-header .eh-badge{display:inline-block;background:var(--exam-gold);color:var(--exam-dark);padding:4px 20px;border-radius:9999px;font-size:.72rem;font-weight:800;letter-spacing:2px;margin-bottom:12px}
+.exam-header h2{font-size:2rem;font-weight:900;color:#fff;margin-bottom:6px;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.exam-header p{color:rgba(255,255,255,.7);font-size:.9rem}
+.exam-header .eh-meta{display:flex;justify-content:center;gap:20px;margin-top:14px;flex-wrap:wrap}
+.exam-header .eh-meta span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:6px 16px;border-radius:8px;color:rgba(255,255,255,.8);font-size:.78rem;font-weight:600}
+.exam-body{padding:30px;position:relative;z-index:1}
+.exam-part{margin-bottom:35px}
+.exam-part-title{font-size:1.15rem;font-weight:800;color:var(--exam-dark);margin-bottom:18px;display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:2px dashed var(--exam-gold)}
+.exam-part-title .ept{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--exam-gold);color:var(--exam-dark);font-size:.75rem;flex-shrink:0}
+#s-exam .qc{border:2px solid color-mix(in srgb,var(--exam-gold) 20%,transparent);background:color-mix(in srgb,var(--exam-sepia) 15%,transparent);border-radius:12px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+#s-exam .qc:hover{border-color:color-mix(in srgb,var(--exam-gold) 40%,transparent)}
+#s-exam .qc.correct{border-color:#0E7C55;background:rgba(16,185,129,.06)}
+#s-exam .qc.wrong{border-color:#C91D2F;background:rgba(239,68,68,.06)}
+#s-exam .qc .qn{color:var(--exam-gold);font-size:.75rem;font-weight:800;letter-spacing:.5px}
+#s-exam .qc .qt{font-size:.92rem;font-weight:600;line-height:1.7;color:var(--exam-dark)}
+#s-exam .mcq-btn{border-color:color-mix(in srgb,var(--exam-gold) 15%,transparent);background:rgba(255,255,255,.5);position:relative}
+#s-exam .mcq-btn .mcq-label{background:color-mix(in srgb,var(--exam-gold) 10%,transparent);color:var(--exam-dark);border-color:color-mix(in srgb,var(--exam-gold) 20%,transparent)}
+#s-exam .mcq-btn:hover{border-color:var(--exam-gold)}
+#s-exam .mcq-btn.mcq-sel-c{border-color:#0E7C55;background:rgba(16,185,129,.15);border-width:2px;box-shadow:0 0 0 3px rgba(16,185,129,.15)}
+#s-exam .mcq-btn.mcq-sel-c .mcq-label{background:#0E7C55;color:#fff;border-color:#0E7C55}
+#s-exam .mcq-btn.mcq-sel-c::after{content:'✅ اختيارك';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.65rem;font-weight:800;color:#0E7C55;background:rgba(16,185,129,.1);padding:2px 8px;border-radius:4px}
+#s-exam .mcq-btn.mcq-sel-w{border-color:#C91D2F;background:rgba(239,68,68,.12);border-width:2px;box-shadow:0 0 0 3px rgba(239,68,68,.12)}
+#s-exam .mcq-btn.mcq-sel-w .mcq-label{background:#C91D2F;color:#fff;border-color:#C91D2F}
+#s-exam .mcq-btn.mcq-sel-w::after{content:'✘ اختيارك';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.65rem;font-weight:800;color:#C91D2F;background:rgba(239,68,68,.1);padding:2px 8px;border-radius:4px}
+#s-exam .mcq-btn.mcq-ans-t{border-color:#0E7C55;background:rgba(16,185,129,.2);border-width:2px}
+#s-exam .mcq-btn.mcq-ans-t .mcq-label{background:#0E7C55;color:#fff;border-color:#0E7C55}
+#s-exam .mcq-btn.mcq-ans-t::after{content:'✓ الإجابة الصحيحة';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.65rem;font-weight:800;color:#0E7C55;background:rgba(16,185,129,.1);padding:2px 8px;border-radius:4px}
+#s-exam .qbtn{border-color:color-mix(in srgb,var(--exam-gold) 15%,transparent);position:relative}
+#s-exam .qbtn:hover{border-color:var(--exam-gold)}
+#s-exam .qbtn.sel-t{border-color:#0E7C55;background:rgba(16,185,129,.15);border-width:2px;box-shadow:0 0 0 3px rgba(16,185,129,.15);color:#0E7C55}
+#s-exam .qbtn.sel-f{border-color:#C91D2F;background:rgba(239,68,68,.12);border-width:2px;box-shadow:0 0 0 3px rgba(239,68,68,.12);color:#C91D2F}
+#s-exam .qbtn.ans-t{border-color:#0E7C55;background:rgba(16,185,129,.2);border-width:2px}
+#s-exam .qi{background:color-mix(in srgb,var(--exam-gold) 8%,transparent);border-color:color-mix(in srgb,var(--exam-gold) 20%,transparent);border-radius:10px;padding:10px 18px}
+#s-exam .qsum{background:linear-gradient(135deg,var(--exam-dark),#2A1F18);border-color:var(--exam-gold);padding:30px}
+#s-exam .qsum h4{color:var(--exam-gold)}
+#s-exam .qsum .sc{color:#fff}
+#s-exam .qsum .sl{color:rgba(255,255,255,.5)}
+#s-exam .qsum .dt .c{background:rgba(16,185,129,.2);color:#4ADE80}
+#s-exam .qsum .dt .w{background:rgba(239,68,68,.2);color:#F87171}
+#s-exam .qrst{background:var(--exam-gold);color:var(--exam-dark);font-weight:800}
+.exam-footer{background:var(--exam-dark);padding:18px 30px;text-align:center;position:relative}
+.exam-footer p{color:rgba(255,255,255,.5);font-size:.78rem;letter-spacing:1px}
+@media(max-width:768px){
+  #s-exam .exam-header{padding:25px 16px 20px}
+  #s-exam .exam-header h2{font-size:1.3rem}
+  #s-exam .exam-body{padding:16px}
+}
+
+/* ── Breadcrumbs ── */
+.bc{display:flex;gap:6px;align-items:center;font-size:.78rem;color:var(--fl-text-muted);margin-bottom:10px;flex-wrap:wrap}
+.bc a{color:var(--fl-accent-a);cursor:pointer;transition:var(--fl-transition)}
+.bc a:hover{text-decoration:underline}
+.bc .bc-sep{color:var(--fl-text-muted);opacity:.4}
+
+/* ── Table of Contents ── */
+.toc{background:var(--fl-glass);border:1px solid var(--fl-glass-border);border-radius:var(--fl-radius-sm);padding:12px 16px;margin-bottom:16px;font-size:.85rem}
+.toc summary{font-weight:700;cursor:pointer;color:var(--fl-accent-a);margin-bottom:4px;user-select:none}
+.toc .toc-l{list-style:none;padding:0;margin:4px 0 0}
+.toc .toc-l li{padding:2px 0}
+.toc .toc-l a{color:var(--fl-text-muted);cursor:pointer;transition:var(--fl-transition);display:block;padding:2px 8px;border-radius:4px}
+.toc .toc-l a:hover{color:var(--fl-accent-a);background:color-mix(in srgb,var(--fl-accent-a) 8%,transparent)}
+.toc .toc-l .toc-h4{padding-right:16px;font-size:.8rem}
+
+/* ── Next/Prev Navigation ── */
+.nn{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--fl-glass-border)}
+.nn-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:9999px;font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--fl-transition);background:var(--fl-glass);border:1px solid var(--fl-glass-border);color:var(--fl-text)}
+.nn-btn:hover{background:var(--fl-grad);color:#fff;border-color:transparent}
+.nn-btn[disabled]{opacity:.3;cursor:default;pointer-events:none}
+
+/* ── Back to Top ── */
+#btt{position:fixed;bottom:30px;left:30px;z-index:998;width:44px;height:44px;border-radius:50%;background:var(--fl-grad);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:1.2rem;box-shadow:0 4px 20px rgba(139,30,71,.35);transition:var(--fl-transition)}
+#btt:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(139,30,71,.5)}
+
+/* ── Keyboard Modal ── */
+#kbd-modal{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.7);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center}
+#kbd-modal.open{display:flex}
+#kbd-box{background:var(--fl-bg);border:1px solid var(--fl-glass-border);border-radius:var(--fl-radius);padding:24px;max-width:480px;width:90%;max-height:80vh;overflow-y:auto}
+#kbd-box h3{font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--fl-accent-a)}
+.kbd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.kbd-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;font-size:.82rem;background:var(--fl-glass)}
+.kbd-item kbd{background:rgba(255,255,255,.1);border:1px solid var(--fl-glass-border);border-radius:4px;padding:2px 8px;font-family:inherit;font-size:.75rem;font-weight:700;min-width:28px;text-align:center;color:var(--fl-accent-a)}
+.kbd-item span{color:var(--fl-text-muted)}
+
+/* ── Quick Jump ── */
+#qj{position:absolute;top:calc(100% + 6px);left:10px;background:rgba(5,5,15,.95);backdrop-filter:blur(16px);border:1px solid var(--fl-glass-border);border-radius:var(--fl-radius-sm);padding:8px;min-width:200px;display:none;z-index:1002;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+#qj.open{display:block}
+#qj a{display:block;padding:6px 12px;border-radius:6px;color:#ddd;font-size:.82rem;font-weight:500;transition:var(--fl-transition);cursor:pointer}
+#qj a:hover{background:var(--fl-glass);color:#fff}
+
+/* ── Search improvements ── */
+.sr-info{font-size:.78rem;color:var(--fl-text-muted);padding:6px 4px;font-weight:600}
+.sr-badge{display:inline-block;padding:1px 8px;border-radius:4px;font-size:.7rem;font-weight:700;background:var(--fl-accent-a);color:#fff;margin-right:6px}
+#si-wrap{position:relative;display:flex;align-items:center}
+#sclear{position:absolute;left:8px;background:none;border:none;color:var(--fl-text-muted);cursor:pointer;font-size:1rem;padding:4px;display:none;line-height:1}
+#sclear:hover{color:var(--fl-accent-a)}
+
+/* ── Sidebar Accordion ── */
+.sb-group .sb-ghead{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;transition:var(--fl-transition);border-bottom:1px solid var(--fl-glass-border);font-size:.82rem;font-weight:700;color:rgba(255,255,255,.6);user-select:none}
+.sb-group .sb-ghead:hover{background:var(--fl-glass)}
+.sb-group .sb-ghead .sb-arrow{font-size:.6rem;transition:transform .2s;margin-right:auto}
+.sb-group.open .sb-ghead .sb-arrow{transform:rotate(180deg)}
+.sb-group .sb-gbody{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.sb-group.open .sb-gbody{max-height:400px}
+.sb-chk{width:18px;height:18px;border-radius:50%;border:2px solid var(--fl-glass-border);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:.6rem;transition:var(--fl-transition);margin-left:auto;background:transparent;color:transparent}
+.sb-chk.done{border-color:var(--fl-success);background:var(--fl-success);color:#fff}
+
+/* ── Exam Timer ── */
+#exam-timer{display:inline-block;background:rgba(212,168,67,.15);border:1px solid var(--exam-gold,#D4A843);padding:4px 14px;border-radius:8px;font-size:.78rem;font-weight:700;color:var(--exam-gold,#D4A843);margin-right:10px;vertical-align:middle}
+
+/* ── Tooltips ── */
+.ctrl{position:relative}
+.ctrl::after{content:attr(data-tip);position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s .4s;z-index:100}
+.ctrl:hover::after{opacity:1}
+
+/* ── Progress Ring ── */
+#pr-ring{display:flex;align-items:center;gap:10px;padding:6px 0}
+#pr-ring svg{flex-shrink:0;transform:rotate(-90deg)}
+#pr-ring .pr-text{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5)}
+#pr-ring .pr-text strong{display:block;font-size:1rem;color:#fff}
+
+/* ── Scroll Animations ── */
+.sa{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
+.sa.sa-v{opacity:1;transform:translateY(0)}
+
+/* ── Particles ── */
+#pt-canvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+/* ── MCQ Filters ── */
+.mcq-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.mcq-filters button{padding:5px 14px;border-radius:9999px;font-family:inherit;font-size:.78rem;font-weight:600;cursor:pointer;transition:var(--fl-transition);background:var(--fl-glass);border:1px solid var(--fl-glass-border);color:var(--fl-text-muted)}
+.mcq-filters button:hover{border-color:var(--fl-accent-a);color:var(--fl-accent-a)}
+.mcq-filters button.active{background:var(--fl-grad);color:#fff;border-color:transparent}
+
+/* ── Continue Reading Toast ── */
+#cr-toast{position:fixed;bottom:80px;right:20px;z-index:999;background:rgba(5,5,15,.92);backdrop-filter:blur(16px);border:1px solid var(--fl-glass-border);border-radius:var(--fl-radius-sm);padding:12px 18px;font-size:.85rem;color:#fff;cursor:pointer;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:320px;transition:var(--fl-transition)}
+#cr-toast:hover{border-color:var(--fl-accent-a)}
+#cr-toast .cr-close{background:none;border:none;color:var(--fl-text-muted);margin-right:10px;cursor:pointer;font-size:.9rem}
+
+/* ── Confetti Canvas ── */
+#cf-canvas{position:fixed;inset:0;z-index:9999;pointer-events:none}
 
 /* ── Responsive ── */
 @media(max-width:768px){
@@ -460,33 +618,65 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <span>قضايا مجتمعية</span>
   </div>
   <div class="controls">
-    <button class="ctrl" id="search-btn" title="بحث">🔍</button>
-    <button class="ctrl" id="theme-btn" title="الوضع الليلي">🌙</button>
+    <button class="ctrl" id="search-btn" title="بحث" data-tip="بحث">🔍</button>
+    <button class="ctrl" id="theme-btn" title="الوضع الليلي" data-tip="الوضع الليلي">🌙</button>
+    <button class="ctrl" id="qjb" title="قائمة سريعة" data-tip="قائمة سريعة">☰</button>
+    <button class="ctrl" id="rqb" title="سؤال عشوائي" data-tip="سؤال عشوائي">🎲</button>
   </div>
   <div class="controls">
-    <button class="ctrl" id="font-increase" title="تكبير الخط">🗤</button>
-    <button class="ctrl" id="font-decrease" title="تصغير الخط">🗧</button>
+    <button class="ctrl" id="font-increase" title="تكبير الخط" data-tip="تكبير الخط">🗤</button>
+    <button class="ctrl" id="font-decrease" title="تصغير الخط" data-tip="تصغير الخط">🗧</button>
+  </div>
+  <div id="qj">
+    <a onclick="closeQJ();nav('home')">🏠 الرئيسية</a>
+    <a onclick="closeQJ();nav('tamheed')">📖 التمهيد</a>
+    <a onclick="closeQJ();nav('ch1')">📊 الفصل الأول</a>
+    <a onclick="closeQJ();nav('ch2')">⚖️ الفصل الثاني</a>
+    <a onclick="closeQJ();nav('ch3')">🔍 الفصل الثالث</a>
+    <a onclick="closeQJ();nav('ch4')">📱 الفصل الرابع</a>
+    <a onclick="closeQJ();nav('ch5')">❤️ الفصل الخامس</a>
+    <a onclick="closeQJ();nav('mcq')">🎯 اختبار MCQ</a>
+    <a onclick="closeQJ();nav('exam')">📜 الامتحان</a>
   </div>
 </header>
 
-<button id="sbt">☰</button>
+<button id="sbt"><span class="sbt-icon"><span></span><span></span><span></span></span></button>
 
 <nav id="sidebar">
-  <div class="sidebar-head"><h3>📚 فصول المقرر</h3></div>
+  <div class="sidebar-head"><h3>📚 فصول المقرر</h3><div id="pr-ring"><svg width="40" height="40"><circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3"/><circle id="pr-ring-circle" cx="20" cy="20" r="16" fill="none" stroke="var(--fl-accent-a)" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.53" stroke-dashoffset="100.53"/></svg><div class="pr-text"><strong id="pr-pct">0%</strong>مكتمل</div></div></div>
   <div id="sidelist"></div>
-  <div class="sidebar-item" onclick="nav('mcq')" style="border-top:1px solid var(--fl-glass-border);margin-top:4px;padding-top:10px">
-    <div class="sn">🎯</div><div class="si"><div class="st">🎯 اختبار شامل MCQ</div><div class="sp"><div class="spb"></div></div></div>
-  </div>
 </nav>
 
 <div id="search-overlay">
   <button id="sc">✕</button>
   <div id="search-modal">
-    <input type="text" id="si" placeholder="ابحث في جميع الفصول..." autofocus>
+    <div id="si-wrap">
+      <input type="text" id="si" placeholder="ابحث في جميع الفصول..." autofocus>
+      <button id="sclear">✕</button>
+    </div>
     <div id="sr"></div>
   </div>
 </div>
 
+<canvas id="pt-canvas"></canvas>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="kbd-modal" onclick="if(event.target===this)closeKbd()">
+  <div id="kbd-box">
+    <h3>⌨️ اختصارات لوحة المفاتيح</h3>
+    <div class="kbd-grid">
+      <div class="kbd-item"><kbd>1-5</kbd><span>الفصول 1-5</span></div>
+      <div class="kbd-item"><kbd>H</kbd><span>الرئيسية</span></div>
+      <div class="kbd-item"><kbd>/</kbd><span>بحث</span></div>
+      <div class="kbd-item"><kbd>Q</kbd><span>اختبار MCQ</span></div>
+      <div class="kbd-item"><kbd>E</kbd><span>الامتحان</span></div>
+      <div class="kbd-item"><kbd>Esc</kbd><span>إغلاق</span></div>
+      <div class="kbd-item"><kbd>?</kbd><span>هذه القائمة</span></div>
+      <div class="kbd-item"><kbd>P</kbd><span>التمهيد</span></div>
+    </div>
+  </div>
+</div>
+<div id="cr-toast" onclick="nav(lastSection);hideCR()"><span id="cr-msg">📖 متابعة القراءة: استمر من حيث توقفت</span><span class="cr-close" onclick="event.stopPropagation();hideCR()">✕</span></div>
+<canvas id="cf-canvas"></canvas>
 <main id="main">
 
 <!-- HOME -->
@@ -508,7 +698,9 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
 
 <!-- TAMHEED -->
 <section class="sec" id="s-tamheed" data-sec="tamheed">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>التمهيد</span></nav>
   <div class="ch"><div class="cn">تمهيد</div><h2>مقدمة الكتاب وقواعد المقرر</h2></div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <p>تتضمن المادة (1) من قانون تنظيم الجامعات أن الجامعات تختص بكل ما يتعلق بالتعليم الجامعي والبحث العلمي الذي تقوم به كلياتها ومعاهدها، في سبيل خدمة المجتمع والارتقاء به حضارياً. وتعتبر الجامعات بذلك معقلاً للفكر الإنساني، وهي مصدر ثروة المجتمع الإنساني وأغلاها، وتزويد البلاد بالمتخصصين والفنيين والخبراء في مختلف المجالات، وتعمل على إعداد الإنسان المزود بالمعرفة وأصول البحث العلمي المتقدمة. كما تهتم الجامعات ببعث الحضارة العربية والتراث التاريخي للشعب المصري وتقاليده الأصيلة، ومراعاة المستوى الرفيع للتربية الدينية والخلقية والوطنية.</p>
     <p>ومن هذا المنطلق، تلعب المناهج التي تدرس بالجامعات دوراً فعالاً في تلبية حاجات المجتمع. ويرى خبراء التربية أن المناهج تبنى على أسس فلسفية ومعرفية واجتماعية ونفسية، تهدف جميعها إلى نقل الفكر الإنساني والموروث الثقافي من الجيل الأكبر إلى الجيل الأصغر، للحفاظ على الحضارة الإنسانية وتطوير جودتها.</p>
@@ -568,15 +760,18 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
       <li><strong>مكافأة الإشراف:</strong> يتم صرف مكافأة لأعضاء لجان الإشراف والمتابعة في الجزء العملي وفقاً للقواعد والضوابط المحددة بقانون تنظيم الجامعات.</li>
     </ul>
   </div>
+  <div class="nn"><span></span><button class="nn-btn" onclick="nav('ch1')">الفصل التالي ←</button></div>
 </section>
 
 <!-- CHAPTER 1 -->
 <section class="sec" id="s-ch1" data-sec="ch1">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>الفصل الأول</span></nav>
   <div class="ch">
     <div class="cn">الفصل الأول</div>
     <h2>المشكلات المترتبة على الزيادة السكانية وأثرها على الصحة الإنجابية</h2>
     <p class="au">تأليف: أ.د/ هشام حسن مخلوف - أستاذ الإحصاء السكاني المتفرغ بكلية الدراسات والبحوث السكانية - جامعة القاهرة</p>
   </div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <p>يعتبر النمو السكاني السريع الذي تميزت به الكثير من الدول النامية منذ بداية النصف الثاني من القرن الماضي ظاهرة غير عادية في التاريخ البشري، حيث إن التقدم الطبي الذي حققته الدول المتقدمة في فترات طويلة، تم نقله مباشرة إلى الدول النامية، مما أدى إلى تحسن ملموس وسريع في الظروف الصحية ومكافحة الأوبئة والأمراض المعدية، وتقديم التطعيمات والمضادات الحيوية ووسائل العلاج الحديثة. وقابل ذلك انخفاض سريع ومفاجئ في مستويات الوفيات في هذه الدول من دون أن يصاحبه انخفاض مماثل وموازٍ في مستويات المواليد كما حدث سابقاً في الدول الصناعية المتقدمة.</p>
     <p>ترتب على ذلك زيادة سكانية مرتفعة شكلت ضغطاً متزايداً على الموارد الاقتصادية المحدودة نسبياً، وأصبحت هذه الدول تعاني مما يُعرف بالمشكلة السكانية وتداعياتها التي تعرقل خطط التنمية الاقتصادية والاجتماعية.</p>
@@ -675,15 +870,18 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <div class="qi"><span>📝 <span id="qi-ch1-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-ch1-correct">0</span></span><span class="wc">✗ <span id="qi-ch1-wrong">0</span></span></div>
     <div id="quiz-ch1"></div>
   </div>
+  <div class="nn"><button class="nn-btn" onclick="nav('tamheed')">→ الفصل السابق</button><button class="nn-btn" onclick="nav('ch2')">الفصل التالي ←</button></div>
 </section>
 
 <!-- CHAPTER 2 -->
 <section class="sec" id="s-ch2" data-sec="ch2">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>الفصل الثاني</span></nav>
   <div class="ch">
     <div class="cn">الفصل الثاني</div>
     <h2>حقوق الإنسان</h2>
     <p class="au">تأليف: أ.د/ يسري حامد الجمل - أستاذ القانون المدني ووكيل كلية الحقوق - جامعة دمياط</p>
   </div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <p>خلق الله سبحانه وتعالى الإنسان وكرمه على سائر المخلوقات، ولا يستطيع الإنسان أن يحيا حياة طبيعية وكريمة بدون حقوق تكفل له آدميته، وتحقق له رغباته وحاجاته؛ فهي حقوق مقررة لكل شخص وملازمة له لكونه إنساناً.</p>
     <h3>أولاً: تعريف حقوق الإنسان</h3>
@@ -747,15 +945,18 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <div class="qi"><span>📝 <span id="qi-ch2-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-ch2-correct">0</span></span><span class="wc">✗ <span id="qi-ch2-wrong">0</span></span></div>
     <div id="quiz-ch2"></div>
   </div>
+  <div class="nn"><button class="nn-btn" onclick="nav('ch1')">→ الفصل السابق</button><button class="nn-btn" onclick="nav('ch3')">الفصل التالي ←</button></div>
 </section>
 
 <!-- CHAPTER 3 -->
 <section class="sec" id="s-ch3" data-sec="ch3">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>الفصل الثالث</span></nav>
   <div class="ch">
     <div class="cn">الفصل الثالث</div>
     <h2>الشفافية ومكافحة الفساد</h2>
     <p class="au">تأليف: أ.د/ يسري حامد الجمل - أستاذ القانون المدني ووكيل كلية الحقوق - جامعة دمياط</p>
   </div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <p>تعتبر الشفافية والفساد من القضايا المجتمعية الهامة التي تمس حياة الأفراد والمجتمعات، وتؤثر على التنمية والاستقرار، وتتطلب معالجتها جهوداً متكاملة من مختلف الجهات. ونقسم هذا الفصل إلى ثلاثة مباحث، نتناول في <strong>المبحث الأول</strong>: مفهوم الشفافية والفساد؛ ونخصص <strong>المبحث الثاني</strong> لأنواع الفساد؛ ونعرض في <strong>المبحث الثالث</strong> لآليات مكافحة الفساد.</p>
 
@@ -859,15 +1060,18 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <div class="qi"><span>📝 <span id="qi-ch3-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-ch3-correct">0</span></span><span class="wc">✗ <span id="qi-ch3-wrong">0</span></span></div>
     <div id="quiz-ch3"></div>
   </div>
+  <div class="nn"><button class="nn-btn" onclick="nav('ch2')">→ الفصل السابق</button><button class="nn-btn" onclick="nav('ch4')">الفصل التالي ←</button></div>
 </section>
 
 <!-- CHAPTER 4 -->
 <section class="sec" id="s-ch4" data-sec="ch4">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>الفصل الرابع</span></nav>
   <div class="ch">
     <div class="cn">الفصل الرابع</div>
     <h2>التربية الإعلامية الرقمية</h2>
     <p class="au">تأليف: أ.د/ سهير عبد السلام حنفي - أستاذ الفلسفة السياسية - كلية الآداب - جامعة حلوان</p>
   </div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <p>أدى التقدم الهائل في مجال تكنولوجيا الاتصال والإعلام، وما نتج عنه من إعلام رقمي إلى وضع العالم كله أمام تحديات عظمى، حيث انفتح العالم شرقه وغربه، شماله وجنوبه على بعضه البعض، وسقطت الحدود أمام عالم افتراضي تتناقل فيه الأخبار والمعلومات والآراء عبر التطبيقات المتعددة على شبكة الإنترنت، حيث لم يعد الإعلام الرقمي مرتبطاً بسياسات الدول والحكومات، وإنما يصنعه الأفراد والجماعات إلى جانب المؤسسات الإعلامية، ولم يعد فكراً أو رأياً واحداً، وإنما كل الأفكار والآراء مطروحة، وتعددت المؤثرات المسموعة والمرئية من صوت وصورة وفيديو وموسيقى وتركيبات فنية لتخلق عالماً خيالياً مبهِراً للمتفاعلين معه، وتيسر الحصول على المعارف والمعلومات، وشمل هذا العالم الافتراضي كل المتناقضات وعبر عدة سياقات ثقافية وسياسية واجتماعية مختلفة، فكان هناك دائماً من يستخدم آليات الإعلام الرقمي في تقدم البشرية ونشر المعارف والتجارب الإنسانية الإيجابية والبناءة ومن يستخدم هذه الآليات لتحقيق أهداف تدميرية ومغرضة، تؤثر على أمن وسلامة المجتمعات والدول.</p>
     <p>لذا اتجهت دول العالم نحو الفرد في المقام الأول لتنمية مهاراته في التفاعل مع وسائل الإعلام الرقمي ليحقق أكبر استفادة من التقنيات الحديثة للإعلام الرقمي، وليكون الفرد بوعيه وإدراكه هو السد المنيع الأول في مواجهة أي محتوى إعلامي يؤثر على أمنه الإنساني والوطني والقومي، وتجنب الفتن ومواجهة الشائعات وحروب الجيل الرابع، والتمسك بالأوطان والانتماء إليها. من هنا دعت كثير من المنظمات الدولية والحكومات إلى تدريس مقرر التربية الإعلامية للطلاب في مراحل التعليم المختلفة.</p>
@@ -1119,14 +1323,17 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <div class="qi"><span>📝 <span id="qi-ch4-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-ch4-correct">0</span></span><span class="wc">✗ <span id="qi-ch4-wrong">0</span></span></div>
     <div id="quiz-ch4"></div>
   </div>
+  <div class="nn"><button class="nn-btn" onclick="nav('ch3')">→ الفصل السابق</button><button class="nn-btn" onclick="nav('ch5')">الفصل التالي ←</button></div>
 </section>
 
 <!-- CHAPTER 5 -->
 <section class="sec" id="s-ch5" data-sec="ch5">
+  <nav class="bc"><a onclick="nav('home')">الرئيسية</a><span class="bc-sep">›</span><span>الفصل الخامس</span></nav>
   <div class="ch">
     <div class="cn">الفصل الخامس</div>
     <h2>مشروع مودة - الحفاظ على كيان الأسرة المصرية</h2>
   </div>
+  <div class="toc"><details><summary>📋 المحتويات</summary></details></div>
   <div class="ct">
     <h3>التعريف بالمشروع</h3>
     <p>هو مشروع يهدف إلى الحفاظ على كيان الأسرة المصرية من خلال تدعيم الشباب المقبل على الزواج بالمعارف والخبرات اللازمة لبناء أسرة سليمة، بالإضافة إلى تطوير آليات الدعم والإرشاد الأسري. ويهدف هذا المشروع إلى رفع الوعي بين الشباب في الفئة العمرية من 18 إلى 25 عاماً، ودعمهم بالمعارف والمهارات الحياتية اللازمة لتكوين الأسرة، في إطار من التفاهم والحوار البنّاء والاحترام المتبادل والمعرفة الكاملة لاحتياجات الطرف الآخر وتوزيع الأدوار داخل الأسرة واحتواء المشكلات والاختلافات.</p>
@@ -1287,6 +1494,7 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
     <div class="qi"><span>📝 <span id="qi-ch5-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-ch5-correct">0</span></span><span class="wc">✗ <span id="qi-ch5-wrong">0</span></span></div>
     <div id="quiz-ch5"></div>
   </div>
+  <div class="nn"><button class="nn-btn" onclick="nav('ch4')">→ الفصل السابق</button><span></span></div>
 </section>
 
 <!-- COMPREHENSIVE MCQ EXAM -->
@@ -1295,7 +1503,41 @@ p.hd{max-width:580px;color:var(--fl-text-muted);font-size:.95rem;line-height:1.8
   <div class="qs" id="qs-mcq">
     <h3>🧪 اختبار الاختيار من متعدد</h3>
     <div class="qi"><span>📝 <span id="qi-mcq-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-mcq-correct">0</span></span><span class="wc">✗ <span id="qi-mcq-wrong">0</span></span></div>
+    <div class="mcq-filters" id="mcq-filters"></div>
     <div id="quiz-mcq"></div>
+  </div>
+</section>
+
+<!-- UNIVERSITY EXAM -->
+<section class="sec" id="s-exam" data-sec="exam">
+  <div class="exam-header">
+    <div class="eh-badge">📜 امتحان رسمي</div>
+    <h2>امتحان قضايا مجتمعية <span id="exam-timer">⏱️ 00:00</span></h2>
+    <p>جامعة سوهاج — كلية الآداب | الفرقة الأولى | جميع البرامج</p>
+    <div class="eh-meta">
+      <span>📅 الفصل الثاني 2025-2026م</span>
+      <span>📝 50 سؤالاً</span>
+      <span>🏆 100 درجة</span>
+    </div>
+  </div>
+  <div class="exam-body">
+    <div class="exam-part">
+      <div class="exam-part-title"><span class="ept">1</span> السؤال الأول: اختر الإجابة الصحيحة</div>
+      <div class="qs" id="qs-exam-mcq">
+        <div class="qi"><span>📝 <span id="qi-exam-mcq-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-exam-mcq-correct">0</span></span><span class="wc">✗ <span id="qi-exam-mcq-wrong">0</span></span></div>
+        <div id="quiz-exam-mcq"></div>
+      </div>
+    </div>
+    <div class="exam-part">
+      <div class="exam-part-title"><span class="ept">2</span> السؤال الثاني: صح ✓ أو خطأ ✗</div>
+      <div class="qs" id="qs-exam-tf">
+        <div class="qi"><span>📝 <span id="qi-exam-tf-total">0</span> سؤال</span><span class="cc">✓ <span id="qi-exam-tf-correct">0</span></span><span class="wc">✗ <span id="qi-exam-tf-wrong">0</span></span></div>
+        <div id="quiz-exam-tf"></div>
+      </div>
+    </div>
+  </div>
+  <div class="exam-footer">
+    <p>📜 امتحان قضايا مجتمعية — جامعة سوهاج 2025-2026</p>
   </div>
 </section>
 
@@ -1309,7 +1551,8 @@ const chapters = [
   {id:'s-ch2',num:'الثاني',title:'حقوق الإنسان',icon:'⚖️'},
   {id:'s-ch3',num:'الثالث',title:'الشفافية ومكافحة الفساد',icon:'🔍'},
   {id:'s-ch4',num:'الرابع',title:'التربية الإعلامية الرقمية',icon:'📱'},
-  {id:'s-ch5',num:'الخامس',title:'مشروع مودة - الحفاظ على كيان الأسرة المصرية',icon:'❤️'}
+  {id:'s-ch5',num:'الخامس',title:'مشروع مودة - الحفاظ على كيان الأسرة المصرية',icon:'❤️'},
+  {id:'s-exam',num:'امتحان',title:'امتحان جامعة سوهاج الرسمي',icon:'📜'}
 ];
 
 const quiz = {
@@ -1565,6 +1808,62 @@ const mcqData = [
   {q:'ما المقصود بالتنمية البشرية؟',opts:['تحسين قدرات ورفاهية الإنسان','خفض مستوى التعليم','تقليل الصحة','منع فرص العمل'],a:0,e:'التنمية البشرية تحسن قدرات ورفاهية الإنسان.'}
 ];
 
+// ===== EXAM DATA (جامعة سوهاج) =====
+const examMCQ = [
+  {q:'يقصد بمعدل "الإعالة السكاني":',opts:['عدد المواليد لكل 1000 من السكان','متوسط السنوات المتوقع أن يعيشها الفرد','نسبة السكان في سن غير العمل (المعالين) إلى السكان في سن العمل (15-64 سنة)'],a:2,e:'معدل الإعالة يقيس عدد المعالين (أطفال + كبار سن) مقابل كل 100 فرد في سن العمل. كلما ارتفع زاد العبء الاقتصادي.'},
+  {q:'تعتبر الزيادة السكانية في مصر ناتجة بالدرجة الأولى عن عاملي "الزيادة الطبيعية" وهما:',opts:['الهجرة الداخلية والخارجية','المواليد والوفيات','الزواج المتأخر والطلاق'],a:1,e:'الزيادة الطبيعية = المواليد - الوفيات. الهجرة الخارجية من مصر مؤقتة في المقام الأول، لذا فالزيادة الطبيعية هي العامل الرئيسي.'},
+  {q:'يؤدي "الاختلال في التركيب العمري" للسكان إلى ضغط كبير على الموارد بسبب:',opts:['زيادة فئة الشباب المنتجة','اتساع قاعدة الهرم السكاني وزيادة فئة الأطفال المستهلكة','انخفاض معدلات الأمية بين الإناث'],a:1,e:'اتساع قاعدة الهرم يعني كثرة الأطفال (فئة مستهلكة) مما يضغط على التعليم والصحة والغذاء.'},
+  {q:'الزيادة السكانية =',opts:['عدد المواليد + عدد الوفيات - المهاجرين','عدد المواليد - عدد الوفيات + المهاجرين','عدد المواليد - عدد الوفيات - المهاجرين'],a:1,e:'الزيادة السكانية = (المواليد - الوفيات) + صافي الهجرة (الداخلون - الخارجون). الإشارة + للمهاجرين لأنهم يضافون للسكان.'},
+  {q:'يقوم .......... بعقد اجتماعات دورية لتقييم البرامج الموضوعة للحد من المشكلة السكانية:',opts:['المجلس القومي للسكان','وزارة الصحة والسكان','منظمات حقوق الإنسان'],a:0,e:'المجلس القومي للسكان هو الجهة المسؤولة عن وضع وتقييم السياسات السكانية في مصر.'},
+  {q:'من خصائص الإعلام الرقمي:',opts:['التفاعلية','الكونية','جميع ما سبق'],a:2,e:'الإعلام الرقمي يتميز بالتفاعلية (مشاركة الجمهور)، والكونية (عبر الحدود)، واللاتزامنية، وتعدد المنصات.'},
+  {q:'السب والقذف والتشهير تعتبر من:',opts:['خصائص الإعلام الرقمي','الجرائم الإلكترونية','الأعمال المنافية للآداب'],a:1,e:'السب والقذف والتشهير عبر الإنترنت تُصنف ضمن الجرائم الإلكترونية التي يعاقب عليها القانون.'},
+  {q:'حروب الجيل الرابع أسلوب بدأ استخدامه من قبل الجيش:',opts:['الروسي','الأمريكي','الياباني'],a:1,e:'طور الجيش الأمريكي مفهوم حروب الجيل الرابع (الحرب اللامتماثلة) بعد أحداث 11 سبتمبر 2001.'},
+  {q:'جريمة تعتبر البطالة سبباً رئيسياً لها:',opts:['السب والقذف','الهجرة غير الشرعية','عمالة الأطفال'],a:2,e:'البطالة تدفع الأسر لإخراج أطفالها لسوق العمل مبكراً لتوفير دخل إضافي، مما ينتشر عمالة الأطفال.'},
+  {q:'دراسة الإعلام الرقمي تفيد في:',opts:['فهم محتوى الرسالة الإعلامية','تحليل الأهداف غير المعلنة للمصدر','جميع ما سبق'],a:2,e:'دراسة الإعلام الرقمي تفيد في فهم المحتوى وتحليل الأهداف الكامنة وراء الرسائل الإعلامية.'},
+  {q:'أخطر وأسرع وسائل الحرب النفسية:',opts:['الإعلام الرقمي','الشائعات','حروب الجيل الرابع'],a:0,e:'الإعلام الرقمي هو أخطر وأسرع وسائل الحرب النفسية نظراً لسرعة انتشاره وتعدد منصاته وتأثيره المباشر.'},
+  {q:'من سلبيات الإعلام الرقمي:',opts:['السرعة في نشر المعلومة','اختراق خصوصية الآخرين','إتاحة التفاعلية مع الجمهور'],a:1,e:'اختراق الخصوصية من أخطر سلبيات الإعلام الرقمي حيث يمكن تتبع البيانات الشخصية واستغلالها.'},
+  {q:'التفاعلية في الإعلام الرقمي تعني:',opts:['التواصل بفاعلية مع المتشابهين عرقياً وأيديولوجياً','وصول رد فعل الجمهور إلى مصدر الرسالة','الرسالة الإعلامية تحقق أهدافها بفاعلية'],a:1,e:'التفاعلية تعني أن المتلقي لم يعد سلبياً بل يشارك برأيه وينتقد ويحلل، ويصل رد فعله للمصدر.'},
+  {q:'.......... حقوق الإنسان باهتمام المنظمات الدولية:',opts:['تحظى','لا تحظى','لا شيء مما سبق'],a:0,e:'حماية حقوق الإنسان من أهم مقاصد ومبادئ الأمم المتحدة والمنظمات الدولية.'},
+  {q:'يعتبر حق الشعوب في تقرير مصيرها من:',opts:['الحقوق الفردية','الحقوق الجماعية','لا شيء مما سبق'],a:1,e:'الحقوق الجماعية هي التي تثبت للجماعات والشعوب، كحق تقرير المصير والحق في التنمية.'},
+  {q:'توجد .......... دولية أساسية لحقوق الإنسان:',opts:['خمس اتفاقيات','سبع اتفاقيات','تسع اتفاقيات'],a:2,e:'توجد 9 اتفاقيات دولية أساسية لحقوق الإنسان في منظومة الأمم المتحدة، منها العهدان الدوليان واتفاقيات مناهضة التمييز.'},
+  {q:'.......... تعرض المتهم للتعذيب في حالة ارتكابه إحدى الجنايات بالغة الخطورة:',opts:['يجوز','لا يجوز','لا شيء مما سبق'],a:1,e:'اتفاقية مناهضة التعذيب تحظر تعذيب أي شخص تحت أي ظرف، ولا يجوز التعذيب حتى للجناة.'},
+  {q:'.......... اتفاقية حقوق الطفل حماية خاصة بأطفال الشوارع:',opts:['تتضمن','لا تتضمن','لا شيء مما سبق'],a:0,e:'اتفاقية حقوق الطفل تتضمن حماية خاصة لأطفال الشوارع والأطفال المرضى واللاجئين والمشردين.'},
+  {q:'.......... القوانين الوطنية نصوصاً تحمي حقوق الإنسان بمختلف أنواعها:',opts:['تتضمن','لا تتضمن','لا شيء مما سبق'],a:0,e:'القوانين الوطنية كالقانون المدني والجنائي تتضمن نصوصاً تحمي حقوق الإنسان.'},
+  {q:'.......... اللوائح من المصادر الوطنية لحقوق الإنسان:',opts:['تعتبر','لا تعتبر','لا شيء مما سبق'],a:0,e:'اللوائح هي تشريع فرعي (تصدره السلطة التنفيذية) وتعتبر من المصادر الوطنية لحقوق الإنسان.'},
+  {q:'.......... تطبيق عقوبة الإعدام بدون حكم قضائي نهائي وبات:',opts:['يجوز','لا يجوز','لا شيء مما سبق'],a:1,e:'لا يجوز تنفيذ الإعدام إلا بحكم قضائي نهائي وبات من محكمة مختصة، ضماناً لحق الإنسان في الحياة.'},
+  {q:'.......... للإنسان الحق في التنقل والإقامة من مكان إلى آخر:',opts:['دون أي قيود','بقيود وإجراءات','لا شيء مما سبق'],a:1,e:'حرية التنقل مكفولة لكن مع قيود تفرضها الدولة لحماية المصلحة العامة والأمن القومي.'},
+  {q:'.......... نزع الملكية الخاصة للمنفعة العامة إذا اقتضت المصلحة العامة ذلك:',opts:['يجوز','لا يجوز','لا شيء مما سبق'],a:0,e:'يجوز نزع الملكية للمنفعة العامة مع تعويض عادل، وفقاً للإجراءات القانونية المنظمة.'},
+  {q:'يعني مبدأ .......... أن يضع كل طرف نفسه محل الطرف الآخر في المواقف المختلفة:',opts:['المواجهة','التسامح','التواصل'],a:1,e:'التسامح هنا بمعنى التعاطف والمواجدة، أي وضع نفسه مكان الآخر ليشعر بمشاعره ويفهم وجهة نظره.'},
+  {q:'يقوم الوالدان بتقويم سلوك الأبناء من خلال:',opts:['الفهم وسلوكياتهم','الكلام فقط','الإقناع'],a:2,e:'تقويم السلوك يتم عبر الإقناع والحوار الهادف وليس بالقوة أو الكلام فقط، وذلك لترسيخ السلوك الإيجابي.'}
+];
+const examTF = [
+  {q:'الزواج المبكر للإناث يؤدي إلى قصر فترة الحياة الإنجابية للمرأة.',a:!1,e:'العكس صحيح — الزواج المبكر يطول فترة الحياة الإنجابية للمرأة لأنها تبدأ الإنجاب مبكراً.'},
+  {q:'تعتبر مصر أكبر دولة عربية من حيث عدد السكان.',a:!0,e:'مصر هي الأولى عربياً من حيث عدد السكان، حيث تجاوز عدد سكانها 100 مليون نسمة.'},
+  {q:'البطالة في مصر تتركز بشكل أساسي في فئة الشباب (أقل من 30 سنة).',a:!0,e:'يمثل الشباب (أقل من 30 سنة) حوالي 90% من إجمالي المتعطلين في مصر.'},
+  {q:'يؤدي الفقر إلى زيادة الرغبة في الإنجاب لمساعدة الأبناء للعائلة عند الكبر.',a:!0,e:'في الطبقات الفقيرة، ترتفع القيمة الاقتصادية للطفل كقوة عاملة تساعد الأسرة.'},
+  {q:'الزيادة السكانية في مصر ناتجة في الأساس عن زيادة عدد الوفيات وتناقص عدد المواليد.',a:!1,e:'الزيادة السكانية ناتجة عن ارتفاع المواليد وانخفاض الوفيات، وليس العكس.'},
+  {q:'حقوق الإنسان قابلة للتصرف فيها.',a:!1,e:'حقوق الإنسان غير قابلة للتصرف فلا يجوز بيعها أو التنازل عنها أو انتزاعها.'},
+  {q:'يعد الإعلان العالمي لحقوق الإنسان من أهم المواثيق الدولية التي تضمن وتحمي حقوق الإنسان.',a:!0,e:'الإعلان العالمي لحقوق الإنسان (1948) من أهم المواثيق الدولية ويتضمن 30 مادة تحمي الحقوق والحريات.'},
+  {q:'قرينة البراءة تقتضي بأن الشخص بريء ما لم تثبت إدانته.',a:!0,e:'قرينة البراءة مبدأ أساسي في حقوق الإنسان — المتهم بريء حتى تثبت إدانته بحكم قضائي.'},
+  {q:'تنص الاتفاقية الدولية لحماية العمال المهاجرين على عدم التمييز على أساس الجنس.',a:!1,e:'الاتفاقية تركز على حماية العمال المهاجرين من الاستغلال والاتجار، وليس على التمييز بين الجنسين.'},
+  {q:'تشجع الاتفاقية الدولية لحماية العمال المهاجرين الهجرة غير الشرعية.',a:!1,e:'الاتفاقية تهدف لمنع الهجرة غير الشرعية والاتجار بالعمال المهاجرين والقضاء عليها.'},
+  {q:'تعتبر الحقوق المدنية والسياسية من الحقوق الجماعية.',a:!1,e:'الحقوق المدنية والسياسية من الحقوق الفردية (تثبت للشخص)، والحق الجماعي كحق تقرير المصير.'},
+  {q:'يجوز إجراء التجارب الطبية والعلمية على الأفراد بدون رضاء حر.',a:!1,e:'يحظر إجراء التجارب الطبية على الفرد بدون رضاه الحر والمستنير حماية لكرامته الإنسانية.'},
+  {q:'للمنزل حرمة فلا يجوز دخوله ولا تفتيشه إلا بأمر قضائي مسبب.',a:!0,e:'حرمة المنزل حق أساسي — لا يجوز دخوله أو تفتيشه إلا بأمر قضائي يحدد المكان والتوقيت والغرض.'},
+  {q:'لا يجوز فرض الحراسة على الملكية الخاصة إلا في الأحوال المبينة في القانون وبحكم قضائي.',a:!0,e:'الملكية الخاصة مصونة، ولا تفرض الحراسة عليها إلا في الأحوال التي يحددها القانون وبحكم قضائي.'},
+  {q:'يعتبر كشف الفساد ومكافحته والسيطرة عليه دوراً قانونياً متكاملاً.',a:!0,e:'مكافحة الفساد تتطلب إطاراً قانونياً متكاملاً يشمل الكشف والملاحقة والعقاب واسترداد الأموال.'},
+  {q:'تدخل الأهل والأقارب في الحياة الزوجية يعد من أهم أسباب المشكلات الأسرية.',a:!0,e:'تدخل الأهل في الحياة الزوجية من أبرز أسباب المشكلات الأسرية حسب الدراسات.'},
+  {q:'الصوت العالي أحد الأساليب السلبية في التربية.',a:!0,e:'الصوت العالي والتهديد والضرب كلها من الأساليب السلبية في تربية الأبناء.'},
+  {q:'يُعرَّف الزواج بأنه ارتباط بين رجل وامرأة لتكوين أسرة تقوم على الهيمنة والقوة.',a:!1,e:'الزواج يقوم على المودة والرحمة والتفاهم، وليس على الهيمنة والقوة.'},
+  {q:'القبول الشكلي لدى الطرفين ليس من معايير اختيار شريك الحياة.',a:!1,e:'القبول الشكلي (التقبل الجسدي) من معايير اختيار شريك الحياة إلى جانب الاستعداد النفسي والتقارب الفكري.'},
+  {q:'الاستخدام المعتدل لوسائل التواصل الاجتماعي يسبب مشكلات أسرية.',a:!1,e:'الاستخدام المعتدل لا يسبب مشاكل، أما الإفراط والإدمان فهما المسببان للمشكلات الأسرية.'},
+  {q:'فهم العادات والتقاليد الثقافية لكل طرف وتقبلها يندرج تحت العوامل الثقافية لإنجاح الزواج.',a:!0,e:'من العوامل الثقافية لنجاح الزواج فهم العادات والتقاليد والموروثات الثقافية لكل طرف وتقبلها.'},
+  {q:'العنف الأسري ليس من أسباب المشكلات الأسرية.',a:!1,e:'العنف الأسري بكافة أشكاله (جسدي، نفسي، اقتصادي) من أهم أسباب المشكلات الأسرية.'},
+  {q:'الأنانية والتفرد بالرأي وعدم أداء الواجبات من أسباب المشكلات الأسرية.',a:!0,e:'الأنانية والفردية والكذب وعدم تحمل المسؤولية كلها من أسباب المشكلات الأسرية.'},
+  {q:'الهدف من المشورة هو تقويم المخاطر المختلفة التي قد يتعرض لها الزوجان.',a:!0,e:'المشورة قبل الزواج تهدف لتقويم المخاطر الطبية والنفسية والاجتماعية وتقديم التثقيف الصحي.'},
+  {q:'الثواب والعقاب غير المتوازن من الأساليب الإيجابية للتربية.',a:!1,e:'الثواب والعقاب غير المتوازن من الأساليب السلبية، فالاتساق والثبات في التربية ضروريان.'}
+];
+
 // ===== STATE =====
 let currentSection = 'home';
 let theme = localStorage.getItem('theme')||'light';
@@ -1586,6 +1885,7 @@ window.onload=function(){
   });
   buildQuiz('ch1');buildQuiz('ch2');buildQuiz('ch3');buildQuiz('ch4');buildQuiz('ch5');
   buildMCQ('mcq');
+  buildExamMCQ('exam-mcq');buildExamTF('exam-tf');
 };
 
 // ===== NAV =====
@@ -1596,18 +1896,61 @@ function nav(id){
   document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('active',s.id==='s-'+currentSection));
   document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.toggle('active',i.dataset.sec===id));
   window.location.hash=id;
+  localStorage.setItem('lastSection',id);
+  updateProgressRing();
 }
 
 // ===== SIDEBAR =====
 function buildSidebar(){
-  const el=document.getElementById('sidelist');
-  chapters.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='sidebar-item';d.dataset.sec=c.id.replace('s-','');
-    d.innerHTML='<div class="sn">'+(i+1)+'</div><div class="si"><div class="st">'+c.icon+' '+c.title+'</div><div class="sp"><div class="spb"></div></div></div>';
-    d.onclick=()=>nav(c.id.replace('s-',''));
-    el.appendChild(d);
+  const el=document.getElementById('sidelist');el.innerHTML='';
+  const groups=[
+    {label:'📖 التمهيد',items:[{id:'tamheed',icon:'📖',title:'مقدمة الكتاب وقواعد المقرر'}]},
+    {label:'📚 الباب الأول (إجباري)',items:[
+      {id:'ch1',icon:'📊',title:'المشكلات المترتبة على الزيادة السكانية'},
+      {id:'ch2',icon:'⚖️',title:'حقوق الإنسان'},
+      {id:'ch3',icon:'🔍',title:'الشفافية ومكافحة الفساد'}
+    ]},
+    {label:'📚 الباب الثاني (اختياري)',items:[
+      {id:'ch4',icon:'📱',title:'التربية الإعلامية الرقمية'},
+      {id:'ch5',icon:'❤️',title:'مشروع مودة - الحفاظ على كيان الأسرة'}
+    ]}
+  ];
+  const completed=JSON.parse(localStorage.getItem('completed')||'{}');
+  groups.forEach(g=>{
+    const grp=document.createElement('div');grp.className='sb-group open';
+    const head=document.createElement('div');head.className='sb-ghead';
+    head.innerHTML=g.label+'<span class="sb-arrow">▼</span>';
+    head.onclick=function(){grp.classList.toggle('open');};
+    const body=document.createElement('div');body.className='sb-gbody';
+    g.items.forEach(item=>{
+      const d=document.createElement('div');
+      d.className='sidebar-item';d.dataset.sec=item.id;
+      const chk=document.createElement('span');chk.className='sb-chk'+(completed[item.id]?' done':'');
+      chk.textContent=completed[item.id]?'✓':'';
+      chk.onclick=function(e){e.stopPropagation();toggleComplete(item.id,chk);};
+      d.innerHTML='<div class="sn">'+item.icon+'</div><div class="si"><div class="st">'+item.title+'</div><div class="sp"><div class="spb"></div></div></div>';
+      d.insertBefore(chk,d.querySelector('.si'));
+      d.onclick=()=>nav(item.id);
+      body.appendChild(d);
+    });
+    grp.appendChild(head);grp.appendChild(body);el.appendChild(grp);
   });
+  const mcqItem=document.createElement('div');mcqItem.className='sidebar-item';mcqItem.dataset.sec='mcq';
+  mcqItem.innerHTML='<div class="sn">🎯</div><div class="si"><div class="st">🎯 اختبار شامل MCQ</div><div class="sp"><div class="spb"></div></div></div>';
+  mcqItem.onclick=()=>nav('mcq');el.appendChild(mcqItem);
+  const examItem=document.createElement('div');examItem.className='sidebar-item';examItem.dataset.sec='exam';
+  examItem.style.cssText='border-top:1px solid var(--fl-glass-border);margin-top:4px;padding-top:8px';
+  examItem.innerHTML='<div class="sn" style="background:#D4A843;color:#1A0F0A;border-color:#D4A843">📜</div><div class="si"><div class="st" style="color:#D4A843">📜 امتحان جامعة سوهاج</div><div class="sp"><div class="spb" style="background:#D4A843"></div></div></div>';
+  examItem.onclick=()=>nav('exam');el.appendChild(examItem);
+  updateProgressRing();
+}
+function toggleComplete(id,el){
+  const completed=JSON.parse(localStorage.getItem('completed')||'{}');
+  completed[id]=!completed[id];
+  localStorage.setItem('completed',JSON.stringify(completed));
+  el.classList.toggle('done',completed[id]);
+  el.textContent=completed[id]?'✓':'';
+  updateProgressRing();
 }
 
 // ===== PROGRESS =====
@@ -1637,10 +1980,13 @@ function applyFont(){document.querySelectorAll('.ct').forEach(el=>el.style.fontS
 // ===== SEARCH =====
 document.getElementById('search-btn').onclick=()=>{document.getElementById('search-overlay').classList.add('open');document.getElementById('si').focus();};
 document.getElementById('sc').onclick=closeSearch;
+document.getElementById('sclear').onclick=function(){document.getElementById('si').value='';document.getElementById('sr').innerHTML='';this.style.display='none';document.getElementById('si').focus();};
 function closeSearch(){document.getElementById('search-overlay').classList.remove('open');}
+const sectionLabels={home:'الرئيسية',tamheed:'التمهيد',ch1:'الفصل الأول',ch2:'الفصل الثاني',ch3:'الفصل الثالث',ch4:'الفصل الرابع',ch5:'الفصل الخامس',mcq:'اختبار MCQ',exam:'الامتحان'};
 function search(){
   const q=document.getElementById('si').value.trim().toLowerCase();
   const res=document.getElementById('sr');res.innerHTML='';
+  document.getElementById('sclear').style.display=q?'block':'none';
   if(!q)return;
   const contentEls=document.querySelectorAll('.sec .ct');
   let results=[];
@@ -1656,10 +2002,15 @@ function search(){
       results.push({sec:secName,title:ch?ch.icon+' '+ch.title:secName,snippet});
     }
   });
+  results.sort((a,b)=>{const order=['tamheed','ch1','ch2','ch3','ch4','ch5'];return order.indexOf(a.sec)-order.indexOf(b.sec);});
   if(results.length===0){res.innerHTML='<p style="color:var(--fl-text-muted);padding:10px;">لا توجد نتائج</p>';return;}
+  const info=document.createElement('div');info.className='sr-info';
+  info.innerHTML='ظهرت <strong>'+results.length+'</strong> نتيجة';
+  res.appendChild(info);
   results.forEach(r=>{
     const d=document.createElement('div');d.className='sri';
-    d.innerHTML='<div class="sp">'+r.title+'</div><div class="ss">'+r.snippet.replace(new RegExp(q,'gi'),m=>'<mark>'+m+'</mark>')+'</div>';
+    const label=sectionLabels[r.sec]||r.sec;
+    d.innerHTML='<div class="sp"><span class="sr-badge">'+label+'</span>'+r.title+'</div><div class="ss">'+r.snippet.replace(new RegExp(q,'gi'),m=>'<mark>'+m+'</mark>')+'</div>';
     d.onclick=()=>{closeSearch();nav(r.sec);};
     res.appendChild(d);
   });
@@ -1757,9 +2108,11 @@ function buildMCQ(id){
   const wrongEl=document.getElementById('qi-'+id+'-wrong');
   container.innerHTML='';
   totalEl.textContent=data.length;
+  const mcqChapterMap=['ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch1','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch2','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch3','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch4','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5','ch5'];
   const optLabels=['أ','ب','ج','د'];
   data.forEach((item,i)=>{
     const card=document.createElement('div');card.className='qc';card.dataset.index=i;
+    card.dataset.chapter=mcqChapterMap[i]||'ch1';
     let optsHtml='';
     item.opts.forEach((o,j)=>{
       optsHtml+='<button class="mcq-btn" data-idx="'+j+'"><span class="mcq-label">'+optLabels[j]+'</span><span class="mcq-text">'+o+'</span></button>';
@@ -1830,12 +2183,363 @@ function resetMCQ(id){
   updateMCQStats(id);
 }
 
+// ===== EXAM (جامعة سوهاج) =====
+function buildExamMCQ(id){
+  const data=examMCQ;if(!data)return;
+  const container=document.getElementById('quiz-'+id);
+  const totalEl=document.getElementById('qi-'+id+'-total');
+  const correctEl=document.getElementById('qi-'+id+'-correct');
+  const wrongEl=document.getElementById('qi-'+id+'-wrong');
+  container.innerHTML='';totalEl.textContent=data.length;
+  const optLabels=['أ','ب','ج'];
+  data.forEach((item,i)=>{
+    const card=document.createElement('div');card.className='qc';card.dataset.index=i;
+    let optsHtml='';
+    item.opts.forEach((o,j)=>{optsHtml+='<button class="mcq-btn exam-opt" data-idx="'+j+'"><span class="mcq-label">'+optLabels[j]+'</span><span class="mcq-text">'+o+'</span></button>';});
+    card.innerHTML='<div class="qn">سؤال '+(i+1)+' من '+data.length+'</div><div class="qt">'+item.q+'</div><div class="mcq-opts">'+optsHtml+'</div><div class="qr"></div>';
+    card.querySelectorAll('.mcq-btn').forEach(btn=>{
+      btn.onclick=function(){
+        if(this.disabled)return;
+        const selected=parseInt(this.dataset.idx);const correct=item.a;
+        card.querySelectorAll('.mcq-btn').forEach(b=>b.disabled=true);
+        const exp=item.e?'<br><span style="font-size:.8rem;font-weight:400;display:block;margin-top:4px">📖 '+item.e+'</span>':'';
+        if(selected===correct){
+          card.classList.add('correct');this.classList.add('mcq-sel-c');
+          card.querySelector('.qr').innerHTML='✅ إجابة صحيحة'+exp;card.querySelector('.qr').className='qr show correct';
+        }else{
+          card.classList.add('wrong');this.classList.add('mcq-sel-w');
+          card.querySelector('.qr').innerHTML='❌ إجابة خاطئة. الإجابة الصحيحة: ('+optLabels[correct]+') '+item.opts[correct]+exp;card.querySelector('.qr').className='qr show wrong';
+          card.querySelectorAll('.mcq-btn').forEach(b=>{if(parseInt(b.dataset.idx)===correct)b.classList.add('mcq-ans-t');});
+        }
+        updateExamStats();
+      };
+    });
+    container.appendChild(card);
+  });
+  updateExamStats();
+}
+function buildExamTF(id){
+  const data=examTF;if(!data)return;
+  const container=document.getElementById('quiz-'+id);
+  const totalEl=document.getElementById('qi-'+id+'-total');
+  container.innerHTML='';totalEl.textContent=data.length;
+  data.forEach((item,i)=>{
+    const card=document.createElement('div');card.className='qc';card.dataset.index=i;
+    card.innerHTML='<div class="qn">سؤال '+(i+1)+' من '+data.length+'</div><div class="qt">'+item.q+'</div><div class="qbtns"><button class="qbtn exam-btn" data-ans="true">✅ صح</button><button class="qbtn exam-btn" data-ans="false">❌ خطأ</button></div><div class="qr"></div>';
+    card.querySelectorAll('.qbtn').forEach(btn=>{
+      btn.onclick=function(){
+        if(this.disabled)return;const selected=this.dataset.ans==='true';const correct=item.a;
+        card.querySelectorAll('.qbtn').forEach(b=>b.disabled=true);
+        const exp=item.e?'<br><span style="font-size:.8rem;font-weight:400;display:block;margin-top:4px">📖 '+item.e+'</span>':'';
+        if(selected===correct){
+          card.classList.add('correct');if(selected)this.classList.add('sel-t');else this.classList.add('sel-f');
+          card.querySelector('.qr').innerHTML='✅ إجابة صحيحة'+exp;card.querySelector('.qr').className='qr show correct';
+        }else{
+          card.classList.add('wrong');if(selected)this.classList.add('sel-f');else this.classList.add('sel-t');
+          card.querySelector('.qr').innerHTML='❌ إجابة خاطئة. الإجابة الصحيحة: '+(correct?'صح':'خطأ')+exp;card.querySelector('.qr').className='qr show wrong';
+          card.querySelectorAll('.qbtn').forEach(b=>{if((b.dataset.ans==='true')===correct)b.classList.add('ans-t');});
+        }
+        updateExamStats();
+      };
+    });
+    container.appendChild(card);
+  });
+  updateExamStats();
+}
+function updateExamStats(){
+  ['exam-mcq','exam-tf'].forEach(id=>{
+    const cards=document.querySelectorAll('#quiz-'+id+' .qc');let correct=0,wrong=0;
+    cards.forEach(c=>{if(c.classList.contains('correct'))correct++;else if(c.classList.contains('wrong'))wrong++;});
+    document.getElementById('qi-'+id+'-correct').textContent=correct;
+    document.getElementById('qi-'+id+'-wrong').textContent=wrong;
+  });
+  const mcqCards=document.querySelectorAll('#quiz-exam-mcq .qc');
+  const tfCards=document.querySelectorAll('#quiz-exam-tf .qc');
+  const allCards=[...mcqCards,...tfCards];
+  if(allCards.length===0)return;
+  const answered=allCards.filter(c=>c.classList.contains('correct')||c.classList.contains('wrong')).length;
+  if(answered<allCards.length)return;
+  const mcqCorrect=parseInt(document.getElementById('qi-exam-mcq-correct').textContent);
+  const tfCorrect=parseInt(document.getElementById('qi-exam-tf-correct').textContent);
+  const totalScore=mcqCorrect+tfCorrect;
+  const totalQs=allCards.length;
+  const pct=Math.round(totalScore/totalQs*100);
+  ['quiz-exam-mcq','quiz-exam-tf'].forEach(id=>{
+    const container=document.getElementById(id);
+    const existing=container.querySelector('.qsum');
+    if(existing)existing.remove();
+  });
+  let grade='',gradeClass='';
+  if(pct>=90){grade='ممتاز';gradeClass='#4ADE80';}
+  else if(pct>=75){grade='جيد جداً';gradeClass='#60A5FA';}
+  else if(pct>=65){grade='جيد';gradeClass='#FBBF24';}
+  else if(pct>=50){grade='مقبول';gradeClass='#FB923C';}
+  else{grade='راسب';gradeClass='#F87171';}
+  const body=document.querySelector('#s-exam .exam-body');
+  if(!body)return;
+  let summary=body.querySelector('.exam-summary');
+  if(!summary){
+    summary=document.createElement('div');summary.className='exam-summary';
+    body.appendChild(summary);
+  }
+  summary.innerHTML='<div style="background:linear-gradient(135deg,var(--exam-dark,#1A0F0A),#2A1F18);border:2px solid var(--exam-gold,#D4A843);border-radius:16px;padding:30px;text-align:center;margin-top:20px"><h4 style="color:var(--exam-gold,#D4A843);font-size:1.1rem;margin-bottom:14px">🎓 نتيجة الامتحان النهائية</h4><div style="font-size:3rem;font-weight:900;color:#fff;line-height:1">'+totalScore+'<span style="font-size:1.2rem;opacity:.5">/'+totalQs+'</span></div><div style="font-size:1.3rem;font-weight:800;color:'+gradeClass+';margin:8px 0 4px">'+grade+'</div><div style="font-size:2rem;font-weight:900;color:'+gradeClass+'">'+pct+'%</div><div style="display:flex;gap:14px;justify-content:center;margin-top:14px"><span style="background:rgba(16,185,129,.2);color:#4ADE80;padding:4px 16px;border-radius:20px;font-weight:700;font-size:.85rem">✓ '+mcqCorrect+' اختياري</span><span style="background:rgba(16,185,129,.2);color:#4ADE80;padding:4px 16px;border-radius:20px;font-weight:700;font-size:.85rem">✓ '+tfCorrect+' صواب/خطأ</span></div><button class="qrst exam-rst" style="margin-top:14px;background:var(--exam-gold,#D4A843);color:var(--exam-dark,#1A0F0A);font-weight:800;padding:8px 28px;border-radius:9999px;border:none;font-family:inherit;font-size:.9rem;cursor:pointer">🔄 إعادة الامتحان</button></div>';
+  summary.querySelector('.exam-rst').onclick=function(){resetExam();};
+  triggerConfetti();
+  stopExamTimer();
+}
+function resetExam(){
+  ['exam-mcq','exam-tf'].forEach(id=>{
+    const container=document.getElementById('quiz-'+id);
+    container.querySelectorAll('.qc').forEach(c=>{
+      c.classList.remove('correct','wrong');
+      c.querySelectorAll('.mcq-btn,.qbtn').forEach(b=>{b.disabled=false;b.className=b.classList.contains('mcq-btn')?'mcq-btn exam-opt':'qbtn exam-btn';});
+      c.querySelector('.qr').className='qr';
+    });
+    const summary=container.querySelector('.qsum');
+    if(summary)summary.remove();
+  });
+  const overall=document.querySelector('.exam-summary');
+  if(overall)overall.remove();
+  updateExamStats();
+  stopExamTimer();examSeconds=0;updateTimerDisplay();
+  startExamTimer();
+}
+
 // ===== SIDEBAR TOGGLE =====
 document.getElementById('sbt').onclick=function(){
   const sb=document.getElementById('sidebar');const main=document.querySelector('main');
   sb.classList.toggle('closed');this.classList.toggle('closed');
   main.classList.toggle('shifted');
 };
+
+// ===== TABLE OF CONTENTS =====
+function buildTOC(){
+  document.querySelectorAll('.toc').forEach(toc=>{
+    const sec=toc.closest('.sec');if(!sec)return;
+    const ct=sec.querySelector('.ct');if(!ct)return;
+    const ul=document.createElement('ul');ul.className='toc-l';
+    const headings=ct.querySelectorAll('h3,h4');
+    headings.forEach(h=>{
+      const li=document.createElement('li');
+      const a=document.createElement('a');
+      const id='toc-'+Math.random().toString(36).slice(2,7);
+      h.id=id;
+      a.textContent=h.textContent;
+      a.href='#'+id;
+      a.onclick=function(e){e.preventDefault();document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});};
+      if(h.tagName==='H4')a.className='toc-h4';
+      li.appendChild(a);ul.appendChild(li);
+    });
+    const det=toc.querySelector('details');
+    if(det)det.appendChild(ul);
+  });
+}
+
+// ===== PROGRESS RING =====
+function updateProgressRing(){
+  const completed=JSON.parse(localStorage.getItem('completed')||'{}');
+  const total=['tamheed','ch1','ch2','ch3','ch4','ch5'];
+  const done=total.filter(id=>completed[id]).length;
+  const pct=Math.round(done/total.length*100);
+  const ring=document.getElementById('pr-ring-circle');
+  const txt=document.getElementById('pr-pct');
+  if(ring){const circ=100.53;ring.style.strokeDashoffset=circ-circ*pct/100;}
+  if(txt)txt.textContent=pct+'%';
+}
+
+// ===== CONTINUE READING =====
+let lastSection=localStorage.getItem('lastSection')||'';
+function showCR(){
+  if(!lastSection||lastSection==='home')return;
+  document.getElementById('cr-toast').style.display='block';
+}
+function hideCR(){document.getElementById('cr-toast').style.display='none';}
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeSearch();closeKbd();}
+  if(e.target.closest('input,textarea'))return;
+  if(e.key==='?'||(e.ctrlKey&&e.key==='/')){e.preventDefault();toggleKbd();return;}
+  if(e.key==='/'){e.preventDefault();document.getElementById('search-btn').click();return;}
+  if(e.target.closest('details'))return;
+  const km={1:'ch1',2:'ch2',3:'ch3',4:'ch4',5:'ch5','h':'home','q':'mcq','e':'exam','p':'tamheed'};
+  const k=e.key.toLowerCase();
+  if(km[k]){nav(km[k]);e.preventDefault();}
+});
+function toggleKbd(){document.getElementById('kbd-modal').classList.toggle('open');}
+function closeKbd(){document.getElementById('kbd-modal').classList.remove('open');}
+
+// ===== QUICK JUMP =====
+document.getElementById('qjb').onclick=function(e){e.stopPropagation();document.getElementById('qj').classList.toggle('open');};
+document.addEventListener('click',function(){document.getElementById('qj').classList.remove('open');});
+function closeQJ(){document.getElementById('qj').classList.remove('open');}
+
+// ===== BACK TO TOP =====
+document.addEventListener('scroll',function(){
+  document.getElementById('btt').style.display=window.scrollY>300?'flex':'none';
+});
+
+// ===== SWIPE GESTURES =====
+(function(){
+  const order=['home','tamheed','ch1','ch2','ch3','ch4','ch5','mcq','exam'];
+  let sx=0,sy=0,dx=0,dy=0;
+  const main=document.getElementById('main');
+  main.addEventListener('touchstart',function(e){sx=e.changedTouches[0].screenX;sy=e.changedTouches[0].screenY;},{passive:true});
+  main.addEventListener('touchend',function(e){
+    dx=e.changedTouches[0].screenX-sx;dy=e.changedTouches[0].screenY-sy;
+    if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
+    const ci=order.indexOf(currentSection);
+    if(dx<0&&ci<order.length-1)nav(order[ci+1]);
+    else if(dx>0&&ci>0)nav(order[ci-1]);
+  },{passive:true});
+})();
+
+// ===== MCQ FILTERS =====
+function buildMCQFilters(){
+  const container=document.getElementById('mcq-filters');if(!container)return;
+  const chapters={ch1:'الفصل الأول',ch2:'الفصل الثاني',ch3:'الفصل الثالث',ch4:'الفصل الرابع',ch5:'الفصل الخامس'};
+  const allBtn=document.createElement('button');allBtn.textContent='الكل';allBtn.className='active';
+  allBtn.onclick=function(){container.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');filterMCQ('all');};
+  container.appendChild(allBtn);
+  Object.keys(chapters).forEach(key=>{
+    const btn=document.createElement('button');btn.textContent=chapters[key];btn.dataset.ch=key;
+    btn.onclick=function(){container.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active');filterMCQ(key);};
+    container.appendChild(btn);
+  });
+}
+function filterMCQ(ch){
+  document.querySelectorAll('#quiz-mcq .qc').forEach(c=>{
+    c.style.display=(ch==='all'||c.dataset.chapter===ch)?'block':'none';
+  });
+}
+
+// ===== EXAM TIMER =====
+let examTimerInterval=null;
+let examSeconds=0;
+function startExamTimer(){
+  if(examTimerInterval)return;
+  examSeconds=0;updateTimerDisplay();
+  examTimerInterval=setInterval(function(){examSeconds++;updateTimerDisplay();},1000);
+}
+function updateTimerDisplay(){
+  const m=String(Math.floor(examSeconds/60)).padStart(2,'0');
+  const s=String(examSeconds%60).padStart(2,'0');
+  const el=document.getElementById('exam-timer');
+  if(el)el.innerHTML='⏱️ '+m+':'+s;
+}
+function stopExamTimer(){
+  if(examTimerInterval){clearInterval(examTimerInterval);examTimerInterval=null;}
+}
+(function(){
+  const obs=new MutationObserver(function(){
+    const examSec=document.getElementById('s-exam');
+    if(examSec&&examSec.classList.contains('active'))startExamTimer();
+    else stopExamTimer();
+  });
+  document.querySelectorAll('.sec').forEach(s=>obs.observe(s,{attributes:true,attributeFilter:['class']}));
+})();
+
+// ===== RANDOM QUESTION =====
+document.getElementById('rqb').onclick=function(){
+  const allQs=[];
+  Object.keys(quiz).forEach(k=>{
+    quiz[k].forEach((q,i)=>{allQs.push({sec:k,index:i,text:q.q,type:'tf'});});
+  });
+  mcqData.forEach((q,i)=>{allQs.push({sec:'mcq',index:i,text:q.q,type:'mcq'});});
+  if(allQs.length===0)return;
+  const pick=allQs[Math.floor(Math.random()*allQs.length)];
+  if(pick.type==='tf'){nav(pick.sec);setTimeout(()=>{const cards=document.querySelectorAll('#quiz-'+pick.sec+' .qc');if(cards[pick.index]){cards[pick.index].scrollIntoView({behavior:'smooth',block:'center'});cards[pick.index].style.borderColor='var(--fl-accent-a)';setTimeout(()=>{cards[pick.index].style.borderColor='';},2000);}},500);}
+  else{nav('mcq');setTimeout(()=>{const cards=document.querySelectorAll('#quiz-mcq .qc');if(cards[pick.index]){cards[pick.index].scrollIntoView({behavior:'smooth',block:'center'});cards[pick.index].style.borderColor='var(--fl-accent-a)';setTimeout(()=>{cards[pick.index].style.borderColor='';},2000);}},500);}
+};
+
+// ===== TYPING EFFECT =====
+(function(){
+  const h1=document.querySelector('#s-home .h');
+  if(!h1||h1.dataset.typed)return;
+  const orig=h1.textContent;
+  h1.dataset.typed='1';
+  h1.textContent='';
+  let i=0;
+  const iv=setInterval(function(){
+    if(i<orig.length){h1.textContent+=orig[i];i++;}
+    else{clearInterval(iv);h1.textContent=orig;}
+  },50);
+})();
+
+// ===== PARTICLES =====
+(function(){
+  const canvas=document.getElementById('pt-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  for(let i=0;i<50;i++){particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*3+1,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,o:Math.random()*.5+.2});}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const isDark=document.body.getAttribute('data-theme')==='dark';
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=isDark?'rgba(255,255,255,'+(p.o*.5)+')':'rgba(139,30,71,'+p.o+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== CONFETTI =====
+function triggerConfetti(){
+  const canvas=document.getElementById('cf-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#C41E3A','#E63950','#D4A843','#0E7C55','#2563EB','#9333EA','#F59E0B','#fff'];
+  const pieces=[];
+  for(let i=0;i<100;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,y:Math.random()*canvas.height*-1,
+      w:Math.random()*8+4,h:Math.random()*6+3,
+      vx:(Math.random()-.5)*4,vy:Math.random()*3+2,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      r:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.2
+    });
+  }
+  let frames=0;
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.r+=p.rv;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    frames++;
+    if(frames<150)requestAnimationFrame(animate);
+    else{ctx.clearRect(0,0,canvas.width,canvas.height);}
+  }
+  animate();
+}
+
+// ===== SCROLL ANIMATIONS =====
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  const obs=new IntersectionObserver(function(entries){
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('sa-v');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  setTimeout(function(){
+    document.querySelectorAll('.ct p,.ct h3,.ct h4,.ct ul,.ct ol,.qc').forEach(el=>{el.classList.add('sa');obs.observe(el);});
+  },500);
+})();
+
+// ===== INIT EXTENSIONS =====
+setTimeout(function(){
+  buildTOC();
+  buildMCQFilters();
+  setTimeout(showCR,1500);
+},100);
 
 
 </script>
